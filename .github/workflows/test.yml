@@ -1,0 +1,32 @@
+name: Build and Test
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    container:
+      image: postgres:13-bullseye
+      env:
+        POSTGRES_PASSWORD: something
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: apt-get update && apt-get install -y gcc make postgresql-server-dev-13 hspell 
+
+      - name: Build pg_hspell
+        run: make && make install
+
+      - name: Start database
+        run: /usr/local/bin/docker-entrypoint.sh postgres &
+
+      - name: Wait for database up
+        run: pg_isready --username=postgres --timeout=10
+
+      - name: Run regression tests
+        run: make installcheck REGRESS_OPTS="--user postgres"

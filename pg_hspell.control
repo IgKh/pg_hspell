@@ -1,0 +1,4 @@
+comment = 'text search dictionary template using libhspell'
+default_version = '1.0'
+module_pathname = '$libdir/dict_hspell'
+relocatable = true
