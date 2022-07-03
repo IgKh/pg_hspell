@@ -6,6 +6,7 @@
 *.ko
 *.obj
 *.elf
+*.bc
 
 # Linker output
 *.ilk
@@ -50,3 +51,8 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# pg_regress output
+results/
+regression.*
+!expected/*.out

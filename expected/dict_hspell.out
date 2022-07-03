@@ -1,0 +1,31 @@
+CREATE EXTENSION pg_hspell;
+SELECT ts_lexize('hspell', 'הרכבת');
+     ts_lexize      
+--------------------
+ {הרכיב,הרכבה,רכבת}
+(1 row)
+
+SELECT ts_lexize('hspell', 'רק');
+ ts_lexize 
+-----------
+ {}
+(1 row)
+
+SELECT ts_lexize('hspell', 'איןמילהכזו');
+  ts_lexize   
+--------------
+ {איןמילהכזו}
+(1 row)
+
+SELECT ts_lexize('hspell', 'English');
+ ts_lexize 
+-----------
+ 
+(1 row)
+
+SELECT ts_lexize('hspell', 'Русский');
+ ts_lexize 
+-----------
+ 
+(1 row)
+
