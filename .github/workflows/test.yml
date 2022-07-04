@@ -6,9 +6,14 @@ on:
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        tag: [9.6-bullseye, 10-bullseye, 11-bullseye, 12-bullseye, 13-bullseye, 14-bullseye]
+
     runs-on: ubuntu-latest
     container:
-      image: postgres:13-bullseye
+      image: postgres:${{ matrix.tag }}
       env:
         POSTGRES_PASSWORD: something
 
@@ -17,7 +22,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: apt-get update && apt-get install -y gcc make postgresql-server-dev-13 hspell 
+        run: apt-get update && apt-get install -y gcc make postgresql-server-dev-${PG_MAJOR} hspell
 
       - name: Build pg_hspell
         run: make && make install
@@ -26,7 +31,14 @@ jobs:
         run: /usr/local/bin/docker-entrypoint.sh postgres &
 
       - name: Wait for database up
-        run: pg_isready --username=postgres --timeout=10
+        run: until pg_isready --username=postgres; do sleep 1; done
 
       - name: Run regression tests
         run: make installcheck REGRESS_OPTS="--user postgres"
+
+      - name: Save regression results for ${{ matrix.tag }}
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: regression.*
