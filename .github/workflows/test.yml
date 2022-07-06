@@ -36,9 +36,9 @@ jobs:
       - name: Run regression tests
         run: make installcheck REGRESS_OPTS="--user postgres"
 
-      - name: Save regression results for ${{ matrix.tag }}
+      - name: Save regression results
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: results
+          name: regression-${{ matrix.tag }}
           path: regression.*

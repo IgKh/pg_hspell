@@ -1,5 +1,7 @@
-MODULES = dict_hspell
-PG_LDFLAGS = -lhspell
+MODULE_big = dict_hspell
+OBJS = dict_hspell.o
+
+SHLIB_LINK = -lhspell
 
 EXTENSION = pg_hspell
 DATA = pg_hspell--1.0.sql
