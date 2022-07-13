@@ -1,4 +1,4 @@
-MODULE_big = dict_hspell
+MODULE_big = pg_hspell
 OBJS = dict_hspell.o
 
 SHLIB_LINK = -lhspell
