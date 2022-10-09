@@ -4,7 +4,7 @@ A simple and simplistic PostgreSQL extension providing a full text search dictio
 
 ## Overview
 
-The Hebrew language is traditionally considered to be difficult to perform documents retrieval tasks on. Its rich morphology means that words have a very large amount of inflections on one hand, and widespread presence of homographs leads to ambiguity. All of that means that full text search systems tend to suffer from poor recall out of the box when dealing with Hebrew texts.
+The Hebrew language is traditionally considered to be difficult to perform document retrieval tasks on. Its rich morphology means that words have a very large amount of inflections on one hand, and widespread presence of homographs leads to ambiguity. All of that means that full text search systems tend to suffer from poor recall out of the box when dealing with Hebrew texts.
 
 `pg_hspell` is a PostgreSQL extension that tries to help with such tasks when using the database's built-in full text search subsystem. It uses the dictionary and linguistic information provided by the hspell project to provide a Postgres dictionary template which lemmatizes Hebrew words as part of a configuration pipeline.
 
@@ -43,13 +43,13 @@ $ make install PG_CONFIG=/path/to/pg_config
 
 To load the extension into a database, execute the following SQL command as a suitably permissioned user:
 
-```
+```sql
 CREATE EXTENSION pg_hspell;
 ```
 
 This will place into the current schema a full text dictionary called `hspell` which is configured with a bundled list of common Hebrew stop words. To create a dictionary with a different stop word list (or none at all), do something like the following SQL command:
 
-```
+```sql
 CREATE TEXT SEARCH DICTIONARY my_hspell_dict (
     TEMPLATE = hspell,
     [ STOPWORDS = my_stop_words_file ]
@@ -80,7 +80,7 @@ If processing dotted text is desired, Niqqud has to be stripped prior to passing
 
 ### A note about parsing
 
-Please note that the default text search parser included with PostgreSQL does not correctly handle corner cases specific to Hebrew where characters usually considered to be  punctuation (i.e. apostrophe and quotation mark) do not act as such when embedded into a work. Such cases are common in Hebrew computer texts in acronyms and abbreviations, which may not be tokenized as expected.
+Please note that the default text search parser included with PostgreSQL does not correctly handle corner cases specific to Hebrew where characters usually considered to be punctuation (i.e. apostrophe and quotation mark) do not act as such when embedded into a word. Such cases are common in Hebrew computer texts in acronyms and abbreviations, which may not be tokenized as expected.
 
 For example:
 ```
@@ -92,7 +92,7 @@ postgres=# select * from ts_parse('default', $$ נתב"ג $$);
      2 | ג
 ```
 
-This is not something specific to `pg_hspell` or within its' scope to address. If there are specific instances that are particularly bothersome, they may be worked around with a [Thesaurus dictionary](https://www.postgresql.org/docs/current/textsearch-dictionaries.html#TEXTSEARCH-THESAURUS).
+This is not something specific to `pg_hspell` or within its' scope to address. If there are specific instances that are particularly bothersome, they may be worked around with a [Thesaurus dictionary](https://www.postgresql.org/docs/current/textsearch-dictionaries.html#TEXTSEARCH-THESAURUS). You may also consider the parser provided by the [pg_icu_parser extension](https://github.com/IgKh/pg_icu_parser), which handles this correctly.
 
 ## License
 
