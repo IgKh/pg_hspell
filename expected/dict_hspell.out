@@ -17,6 +17,12 @@ SELECT ts_lexize('hspell', 'איןמילהכזו');
  {איןמילהכזו}
 (1 row)
 
+SELECT ts_lexize('hspell', 'ישראל');
+ ts_lexize 
+-----------
+ {ישראל}
+(1 row)
+
 SELECT ts_lexize('hspell', 'English');
  ts_lexize 
 -----------

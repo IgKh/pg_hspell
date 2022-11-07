@@ -31,6 +31,8 @@ typedef struct DictHspell
 }
 DictHspell;
 
+static const unsigned char MISC_STEM[] = {0xF9, 0xE5, 0xF0, 0xE5, 0xFA, 0};
+
 static List* stem_list;
 
 PG_FUNCTION_INFO_V1(dhspell_init);
@@ -143,6 +145,10 @@ hspell_callback(const char* word, const char* baseword, int preflen, int prefspe
             break;
         }
         if ((linginfo_desc2ps(desc, i) & prefspec) == 0) {
+            continue;
+        }
+
+        if (memcmp(stem_text, MISC_STEM, sizeof(MISC_STEM)) == 0) {
             continue;
         }
 
