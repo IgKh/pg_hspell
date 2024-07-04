@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tag: [9.6-bullseye, 10-bullseye, 11-bullseye, 12-bullseye, 13-bullseye, 14-bullseye, 15-bullseye]
+        tag: [12-bullseye, 13-bullseye, 14-bullseye, 15-bullseye, 16-bullseye]
 
     runs-on: ubuntu-latest
     container:
